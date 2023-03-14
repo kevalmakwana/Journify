@@ -1,5 +1,601 @@
-swagger: '2.0'
-info: 
-	title: Journify - API
-	version: '1.0.0'
-	description: 
+openapi: 3.0.1
+info:
+  title: Travel Website API
+  description: API for booking holiday packages on a travel website
+  version: "1.0"
+servers:
+- url: /api
+paths:
+  /packages:
+    get:
+      summary: Get all holiday packages
+      description: Returns a list of all holiday packages available for booking
+      responses:
+        200:
+          description: A list of holiday packages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+    post:
+      summary: Create a new holiday package
+      description: Creates a new holiday package for booking
+      requestBody:
+        description: The details of the new holiday package
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPackage'
+        required: false
+      responses:
+        201:
+          description: The newly created holiday package
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+      x-codegen-request-body-name: package
+  /packages/{id}:
+    get:
+      summary: Get a holiday package by ID
+      description: Returns the details of a holiday package by ID
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the holiday package
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: The holiday package
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+        404:
+          description: The holiday package was not found
+          content: {}
+    put:
+      summary: Update a holiday package by ID
+      description: Updates the details of a holiday package by ID
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the holiday package
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: The updated details of the holiday package
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedPackage'
+        required: false
+      responses:
+        200:
+          description: The updated holiday package
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Package'
+        404:
+          description: The holiday package was not found
+          content: {}
+      x-codegen-request-body-name: package
+    delete:
+      summary: Delete a holiday package by ID
+      description: Deletes a holiday package by ID
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the holiday package
+        required: true
+        schema:
+          type: integer
+      responses:
+        204:
+          description: The holiday package was deleted
+          content: {}
+        404:
+          description: The holiday package was not found
+          content: {}
+  /train/book_tickets:
+    description: interface for booking tickets
+    get:
+      operationId: search train in a route
+      parameters: 
+        - name: From
+          in: query
+          description: origin
+          schema:
+            type: string
+            example: Mumbai
+        - name: To
+          in: query
+          description: destination 
+          schema:
+            type: string
+            example: Delhi
+        - name: date
+          in: query
+          description: travel date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: class
+          in: query
+          description: travel class
+          schema:
+            type: string
+            example: 3rd ac
+      responses:
+        200:
+          description: successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/train_book_ticket'
+  /train/pnr_status:
+    description: check pnr_status
+    get:
+      operationId: get pnr_details
+      parameters: 
+        - name: pnr number
+          in: query
+          description: 10-digit number
+          schema:
+            type: integer
+            example: 1234567890
+      responses:
+        200:
+          description: successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/train_pnr_status'
+  /train/live_train_status:
+    description: gives train location
+    get:
+      operationId: get current_location
+      parameters: 
+        - name: train_number
+          in: query
+          description: 5-digit number
+          schema:
+            type: integer
+            example: 12345
+      responses:
+        200:
+          description: successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/train_live_status'
+  /flight/one_way:
+    description: interface for booking flight
+    get:
+      operationId: search flight in a route
+      parameters: 
+        - name: From
+          in: query
+          description: origin
+          schema:
+            type: string
+            example: Mumbai
+        - name: To
+          in: query
+          description: destination 
+          schema:
+            type: string
+            example: Delhi
+        - name: departure date
+          in: query
+          description: departure date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: return date
+          in: query
+          description: return date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: class
+          in: query
+          description: travel class
+          schema:
+            type: string
+            example: economy
+      responses:
+        200:
+          description: successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flight_one_way'
+  /flight/round_way:
+    description: interface for booking flight for round trip
+    get:
+      operationId: search flight in a round trip
+      parameters: 
+        - name: From
+          in: query
+          description: origin
+          schema:
+            type: string
+            example: Mumbai
+        - name: To
+          in: query
+          description: destination 
+          schema:
+            type: string
+            example: Delhi
+        - name: departure date
+          in: query
+          description: departure date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: return date
+          in: query
+          description: return date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: class
+          in: query
+          description: travel class
+          schema:
+            type: string
+            example: economy
+      responses:
+        200:
+          description: successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flight_round_way'
+  /flight/multi_city:
+    description: interface for booking flight for multicity
+    get:
+      operationId: search flight in a multicity route
+      parameters: 
+        - name: From
+          in: query
+          description: origin
+          schema:
+            type: string
+            example: Mumbai
+        - name: Intermediate
+          in: query
+          description: Intermediate
+          schema:
+            type: string
+            example: Bangaluru
+        - name: To
+          in: query
+          description: destination 
+          schema:
+            type: string
+            example: Delhi
+        - name: first_departure date
+          in: query
+          description: first_departure date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: second_departure date
+          in: query
+          description: second_departure date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: class
+          in: query
+          description: travel class
+          schema:
+            type: string
+            example: economy
+      responses:
+        200:
+          description: successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flight_multi_city'
+    
+                
+components:
+  schemas:
+    Package:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the holiday package
+        name:
+          type: string
+          description: The name of the holiday package
+        description:
+          type: string
+          description: A brief description of the holiday package
+        price:
+          type: number
+          description: The price of the holiday package
+          format: float
+        duration:
+          type: integer
+          description: The duration of the holiday package in days
+        inclusions:
+          type: array
+          description: A list of inclusions in the holiday package
+          items:
+            type: string
+        location:
+          type: string
+          description: The location of the holiday package
+    NewPackage:
+      required:
+      - duration
+      - name
+      - price
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name   of the holiday   package
+        description:
+          type: string
+          description: A brief description of the holiday package
+        price:
+          minimum: 0.01
+          type: number
+          description: The price of the holiday package
+          format: float
+        duration:
+          minimum: 1
+          type: integer
+          description: The duration of the holiday package in days
+        inclusions:
+          type: array
+          description: A list of inclusions in the holiday package
+          items:
+            type: string
+        location:
+          type: string
+          description: The location of the holiday package
+    UpdatedPackage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the holiday package
+        description:
+          type: string
+          description: The updated description of the holiday package
+        price:
+          minimum: 0.01
+          type: number
+          description: The updated price of the holiday package.
+          format: float
+        duration:
+          minimum: 1
+          type: integer
+          description: The updated duration of the holiday package in days
+        inclusions:
+          type: array
+          description: The updated list of inclusions in the holiday package
+          items:
+            type: string
+        location:
+          type: string
+          description: The updated location of the holiday package
+    train_book_ticket:
+      type: object
+      properties:
+        train_number:
+          type: integer
+          example: 234534
+        name:
+          type: string
+          example: Rajdhani Express
+        departure_time:
+          type: string
+          format: time
+          example: 19:34
+        arrival_time:
+          type: string
+          format: time
+          example: 23:56
+        fare:
+          type: integer
+          format: currency
+          example: 100
+          
+    train_pnr_status:
+      type: object
+      properties:
+        name:
+          type: string
+          example: shivam
+        age:
+          type: integer
+          example: 23
+        sex:
+          type: string
+          example: male
+        date_of_birth:
+          type: string
+          format: date
+          example: DD/MM/YYYY
+        status:
+          type: string
+          example: approved
+        train_number:
+          type: integer
+          example: 12345
+        train_name:
+          type: string
+          example: Rajdhani Express
+        date_of_journey:
+          type: string
+          format: date
+          example: DD/MM/YYYY
+        source_station:
+          type: string
+          example: Delhi
+        destination_station:
+          type: string
+          example: Delhi
+        departure_time:
+          type: string
+          format: time
+          example: 19:34
+        arrival_time:
+          type: string
+          format: time
+          example: 23:56
+        fare:
+          type: integer
+          format: currency
+          example: 100
+        coach_no:
+          type: string
+          example: D26
+        berth:
+          type: string
+          example:  lower
+    
+    train_live_status:
+      type: object
+      properties:
+        train_number:
+          type: integer
+          example: 12345
+        name:
+          type: string
+          example: Rajdhani Express
+        previous_station:
+          type: string
+          example: Delhi
+        next_station:
+          type: string
+          example: Agra
+          
+    flight_one_way:
+      type: object
+      properties:
+        flight_number:
+          type: string
+          example: SG 1169
+        name:
+          type: string
+          example: Air Asia
+        departure_time:
+          type: string
+          format: time
+          example: 19:34
+        arrival_time:
+          type: string
+          format: time
+          example: 23:56
+        duration:
+          type: string
+          example: 02 h 15 m
+        fare:
+          type: integer
+          format: currency
+          example: 7000
+          
+    flight_round_way:
+      type: object
+      properties:
+        flight_number:
+          type: string
+          example: SG 1169
+        name:
+          type: string
+          example: Air Asia
+        departure_time:
+          type: string
+          format: time
+          example: 19:34
+        arrival_time:
+          type: string
+          format: time
+          example: 23:56
+        duration:
+          type: string
+          example: 02 h 15 m
+        fare:
+          type: integer
+          format: currency
+          example: 7000
+    
+    flight_multi_city:
+      type: object
+      properties:
+        first_flight_number:
+          type: string
+          example: SG 1169
+        first_flight_name:
+          type: string
+          example: Air Asia
+        first_departure_time:
+          type: string
+          format: time
+          example: 11:34
+        first_arrival_time:
+          type: string
+          format: time
+          example: 13:56
+        first_trip_duration:
+          type: string
+          example: 02 h 15 m
+        first_trip_fare:
+          type: integer
+          format: currency
+          example: 7000
+          
+        second_flight_number:
+          type: string
+          example: SG 1169
+        second_flight_name:
+          type: string
+          example: Vistara
+        second_departure_time:
+          type: string
+          format: time
+          example: 18:24
+        second_arrival_time:
+          type: string
+          format: time
+          example: 19:31
+        second_trip_duration:
+          type: string
+          example: 02 h 15 m
+        second_trip_fare:
+          type: integer
+          format: currency
+          example: 4000
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
