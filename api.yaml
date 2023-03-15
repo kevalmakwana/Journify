@@ -103,10 +103,12 @@ paths:
         404:
           description: The holiday package was not found
           content: {}
+  
   /train/book_tickets:
     description: interface for booking tickets
     get:
-      operationId: search train in a route
+      summary: Book train tickets
+      operationId: search train in route
       parameters: 
         - name: From
           in: query
@@ -143,6 +145,7 @@ paths:
   /train/pnr_status:
     description: check pnr_status
     get:
+      summary: Check pnr status
       operationId: get pnr_details
       parameters: 
         - name: pnr number
@@ -161,6 +164,7 @@ paths:
   /train/live_train_status:
     description: gives train location
     get:
+      summary: Check live_status
       operationId: get current_location
       parameters: 
         - name: train_number
@@ -176,9 +180,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/train_live_status'
+  /train/book_tickets/delete_ticket:
+    description: interface for cancelling tickets
+    delete:
+      summary: Cancel ticket by pnr
+      operationId: search train in a route
+      parameters: 
+        - name: pnr_number
+          in: query
+          schema:
+            type: integer
+            example: 1334221
+      responses:
+        200:
+          description: successful deletion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deleted_pnr'
+        404:
+          description: The pnr_number does not exist
+          content: {}
   /flight/one_way:
     description: interface for booking flight
     get:
+      summary: Check one way flights
       operationId: search flight in a route
       parameters: 
         - name: From
@@ -223,6 +251,7 @@ paths:
   /flight/round_way:
     description: interface for booking flight for round trip
     get:
+      summary: Check round way flights
       operationId: search flight in a round trip
       parameters: 
         - name: From
@@ -267,6 +296,7 @@ paths:
   /flight/multi_city:
     description: interface for booking flight for multicity
     get:
+      summary: Check multi city flights
       operationId: search flight in a multicity route
       parameters: 
         - name: From
@@ -314,10 +344,171 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/flight_multi_city'
-    
+  /flight/cancel_ticket :
+    description: interface for cancelling flight
+    delete:
+      summary: interface for cancelling flight
+      operationId: delete flight by pnr
+      parameters: 
+        - name: pnr number
+          in: query
+          description: origin
+          schema:
+            type: integer
+            example: 65785764
+      responses:
+        200:
+          description: successful deletion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flight_one_way'
+        404:
+          description: The pnr_number was not found
+          content: {}
+  /flight/update_ticket:
+    description: interface for updating flight
+    put:
+      summary: interface for updating flight ticket
+      operationId: update flight by pnr
+      parameters: 
+        - name: pnr number
+          in: query
+          description: origin
+          schema:
+            type: integer
+            example: 65785764
+        - name: From
+          in: query
+          description: origin
+          schema:
+            type: string
+            example: Mumbai
+        - name: To
+          in: query
+          description: destination 
+          schema:
+            type: string
+            example: Delhi
+        - name: departure date
+          in: query
+          description: departure date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: return date
+          in: query
+          description: return date
+          schema:
+            type: string
+            format: date
+            example: DD/MM/YYYY
+        - name: class
+          in: query
+          description: travel class
+          schema:
+            type: string
+            example: economy
+      responses:
+        200:
+          description: successful deletion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/flight_updated'
+        404:
+          description: The pnr_number was not found
+          content: {}
+          
                 
 components:
   schemas:
+    flight_updated:
+      type: object
+      properties:
+        flight_number:
+          type: string
+          example: SG 1169
+        name:
+          type: string
+          example: Air Asia
+        departure_time:
+          type: string
+          format: time
+          example: 19:34
+        arrival_time:
+          type: string
+          format: time
+          example: 23:56
+        duration:
+          type: string
+          example: 02 h 15 m
+        new_fare:
+          type: integer
+          format: currency
+          example: 7000
+        refund:
+          type: integer
+          format: currency
+          example: 3000
+    Deleted_pnr:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The pnr of the journey
+        name:
+          type: string
+          example: shivam
+        age:
+          type: integer
+          example: 23
+        sex:
+          type: string
+          example: male
+        date_of_birth:
+          type: string
+          format: date
+          example: DD/MM/YYYY
+        status:
+          type: string
+          example: cancelled
+        train_number:
+          type: integer
+          example: 12345
+        train_name:
+          type: string
+          example: Rajdhani Express
+        date_of_journey:
+          type: string
+          format: date
+          example: DD/MM/YYYY
+        source_station:
+          type: string
+          example: Delhi
+        destination_station:
+          type: string
+          example: Delhi
+        departure_time:
+          type: string
+          format: time
+          example: 19:34
+        arrival_time:
+          type: string
+          format: time
+          example: 23:56
+        fare:
+          type: integer
+          format: currency
+          example: 100
+        coach_no:
+          type: string
+          example: D26
+        berth:
+          type: string
+          example:  lower
+        
     Package:
       type: object
       properties:
