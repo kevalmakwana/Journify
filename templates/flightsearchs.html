@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flight Search Results</title>
+    <style>
+      
+      body {
+        font-family: 'Merriweather', serif;
+        margin: 0;
+        padding: 0;
+        font-size: 22px;
+        background-color: #f1da85;
+      }
+
+      header {
+        background-color: #d6a92ff5;
+        margin: 0;
+        font-family: 'Merriweather', serif;
+        color: #fff;
+        border-radius: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 10px;
+        text-align: center;
+        padding: 20px;
+      }
+
+      header h1 {
+        margin: 0px;
+        font-family:'Merriweather'
+      }
+
+      main {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .flight-results {
+        margin: 20px;
+        padding: 20px;
+        /* border: 1px solid #ccc; */
+      }
+
+      .flight-result {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-family: 'Merriweather', serif; 
+        margin-bottom: 10px;
+        padding: 10px;
+        /* border: 1px solid #ccc; */
+      }
+
+      .flight-info {
+        width: 70%;
+        font-family: 'Merriweather', serif;
+      }
+
+      .flight-book {
+        width: 30%;
+        display: flex;
+        align-items: center;
+        margin-top: 260px;
+        margin-right: 50px;
+        justify-content: right;
+        font-family: 'Merriweather', serif;
+      }
+
+      .btn {
+        background-color:#d6a92ff5;
+        border: none;
+        border-radius: 5px;
+        color: black;
+        padding: 16px 32px;
+        text-align: center;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition: 0.3s;
+        font-family: 'Merriweather', serif;
+      }
+
+      .btn:hover {
+        background-color:#d6a92fb0;
+        color: white;
+      }
+
+      button {
+        background-color: #cb8f20;
+        color: #fff;
+        padding: 20px 32px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 15px;
+        font-family: 'Merriweather';
+      }
+
+      button:hover {
+        background-color: #c97e23;
+      }
+
+      span.time {
+        float: right;
+        margin-right: -10px;
+        color: rgb(0, 0, 0);
+      }
+
+      form {
+			width: 1183px;
+			margin-left: -20px;
+			background-color: rgba(255, 248, 239, 0.6); /* transparent white */
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 0 12px rgba(0, 0, 0, 0.2); /* shadow */
+			font-family: 'Montserrat', sans-serif;
+			color: #272444; /* dark blue */
+      margin-bottom: 20px;
+		  }
+
+      .centered-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f1f1f1;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }      
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Flight Search Results</h1>
+    </header>
+    <main>
+      <section class="flight-results">
+        <!-- <img src="img.jpg" alt="Flight Results Image" width="100%"> -->
+        {% if results %}
+        {% set i = 0 %}
+        {% for result in results %}
+          {% set i = i + 1 %}
+          <form action="{{ url_for('select_flight') }}" method="post">
+            <div class="flight-result">
+              <div class="flight-info">
+                <button class="btn">Flight {{ i }}</button>
+                <p>Origin: {{ result[2] }}<span class = "time">Destination: {{ result[3] }}<span></p>
+                <p>Departure Time: {{ result[5] }}<span class = "time">Arrival Time: {{ result[6] }} <span></p>
+                <p>Flight Number: {{ result[0] }}</p>
+                <p>Airline: {{ result[1] }}</p>
+                <p>Price: Rs.3456</p>
+              </div>
+              <div class="flight-book">
+                <input type="hidden" name="flight_no" value="{{ result[0] }}">
+                <input type="hidden" name="airline" value="{{ result[1] }}">
+                <input type="hidden" name="origin" value="{{ result[2] }}">
+                <input type="hidden" name="destination" value="{{ result[3] }}">
+                <input type="hidden" name="dep_time" value="{{ result[5] }}">
+                <input type="hidden" name="arr_time" value="{{ result[6] }}">
+                <input type="hidden" name="dep_date" value="{{ dep_date }}">
+                <button type="submit">Book Flight</button>
+              </div>
+            </div>
+          </form>
+        {% endfor %}
+        {% else %}
+          <div class="centered-message">
+            <h1>No flights found for the desired origin and destination.</h1>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>

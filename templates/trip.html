@@ -5,146 +5,257 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-         /* Style the table */
-         table {
-          border-collapse: collapse;
-          width: 100%;
-          color: #333;
-          font-size: 14px;
-          text-align: left;
-        }
-      
-        /* Style the table header */
-        th {
-          background-color: #4CAF50;
-          color: white;
-          font-weight: bold;
-          padding: 10px;
-          text-align: center;
-          vertical-align: middle;
-        }
-      
-        /* Style the table body */
-        td {
-          text-align: center;  
-          border: 1px solid #ddd;
-          padding: 10px;
-          vertical-align: middle;
-        }
-      
-        /* Alternate row color */
-        tr:nth-child(even) {
-          background-color: #f2f2f2;
-        }
-      
-        /* Hover effect */
-        tr:hover {
-          background-color: #ddd;
-        }
-
-        .centered-message {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #f1f1f1;
-        padding: 20px;
-        border: 1px solid #ccc;
-      }
-
-      button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background-color: #3e8e41;
-      }
-
-      .top-right {
-        position:absolute;
-        top: 0;
-        right: 0;
-      }
-
-      .top-right p {
-        background-color: white;
-        padding: 5px;
-      }
-      </style>
+    <!-- <link rel="stylesheet" href="trip.css"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/trip.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
 </head>
 <body>
-    <div class="top-right">
+  <section class="header">
+    <nav>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo_final.png') }}" alt=""></a>
+        <!-- <a href="{{ url_for('home') }}"><img src="images/logo_final.png" alt=""></a> -->
+        <div class="nav_links" id="navlinks">
+            <i class="bi bi700 bi-x" onclick="hideMenu()"></i>
+            <ul>
+                <li>
+                    <a href="{{ url_for('home') }}">
+                        <div class="nav_col">
+                            <i class="bi bi-house-door" style="font-size: 26px"></i>
+                            <h4>Home</h4>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('flight') }}">
+                        <div class="nav_col">
+                            <i class="bi bi-airplane" style="font-size: 26px"></i>
+                            <h4>Flights</h4>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('train') }}">
+                        <div class="nav_col">
+                            <i class="bi bi-train-lightrail-front" style="font-size: 26px"></i>
+                            <h4>Trains</h4>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('holiday') }}">
+                        <div class="nav_col">
+                            <i class="bi bi-briefcase" style="font-size: 26px"></i>
+                            <h4>Holidays</h4>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('trip') }}">
+                        <div class="nav_col trip">
+                            <i class="bi bi-car-front" style="font-size: 26px"></i>
+                            <h4>Trips</h4>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="dropdown show">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="user.html">
+                    <div class="profile">
+                        <i class="bi bi-person-circle" style="font-size: 30px;"></i>
+                        <h4>Matt Pery</h4>
+                    </div>
+                </a>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="user.html">Profile</a>
+              <a class="dropdown-item" href="login.html">Login Page</a>
+            </div>
+          </div> -->
+        <!-- <a href="user.html">
+            <div class="profile">
+                <h4>Matt Pery</h4>
+            </div>
+        </a> -->
+        <div class="side profile">
+            <!-- <img src="images/matt_pery.jpg" class="user_pic" onclick="togglemenu()" alt=""> -->
+            <i class="bi bi-person-circle" onclick="togglemenu()" style="font-size: 30px;"></i>
+            <h4>{{ username }}</h4>
+        </div>
+        <i class="bi bi700 bi-list" onclick="showMenu()"></i>
+        <div class="sub_menu_wrap" id="submenu">
+            <div class="sub_menu">
+                <div class="user_info">
+                    <!-- <img src="images/matt_pery.jpg" alt=""> -->
+                    <h3>{{ username }}</h3>
+                </div>
+                <hr>
+                <a href="{{ url_for('user') }}" class="sub_menu_link">
+                    <img src="{{ url_for('static', filename='img/profile.png') }}" alt="">
+                    <p>View Profile</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub_menu_link">
+                    <img src="{{ url_for('static', filename='img/setting.png') }}" alt="">
+                    <p>Settings and privacy</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub_menu_link">
+                    <img src="{{ url_for('static', filename='img/help.png') }}" alt="">
+                    <p>Help & Support</p>
+                    <span>></span>
+                </a>
+                <a href="{{ url_for('signup_page') }}" class="sub_menu_link">
+                    <img src="{{ url_for('static', filename='img/logout.png') }}" alt="">
+                    <p>Logout</p>
+                    <span>></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="header_body">
+      <!-- <div class="top-right">
         <p>Welcome, {{ username }}</p>
-    </div>
-    <h1>Your Bookings</h1>
-    <div>
-      <button onclick="window.history.back()">Back</button>
-      <button onclick="location.reload()">Refresh</button>
-    </div>
-    <p>Select an option to view your bookings:</p>
-    <form>
-        <label><input type="radio" name="option" value="flight" {% if selected_option == 'flight' %}checked{% endif %}>Show Flight Bookings</label><br>
-        <label><input type="radio" name="option" value="train" {% if selected_option == 'train' %}checked{% endif %}>Show Train Bookings</label><br>
-        <input type="submit" value="Submit">
-    </form>
-    <h2>Your {{ selected_option.capitalize() }} Bookings:</h2>
-    {% if bookings %}
-        <table>
-            <thead>
-                <th>Booking ID</th>
-                <th>{{ selected_option.capitalize() }} Number</th>
-                {% if selected_option == 'flight' %}
-                <th>Airline</th>
-                {% else %}
-                <th>{{ selected_option.capitalize() }} Name</th>
-                {% endif %}
-                <th>Origin</th>
-                <th>Destination</th>
-                {% if selected_option == 'flight' %}
-                <th>Scheduled Departure</th>
-                <th>Scheduled Arrival</th>
-                {% else %}
-                <th>Day</th>
-                {% endif %}
-                <th>Travel Date</th>
-                <th>Status of Journey</th>
-            </thead>
-            {% for booking in bookings %}
-            <tbody>
+      </div> -->
+      <h1>My Bookings</h1>
+      <!-- <p>Select an option to view your bookings:</p> -->
+      <form>
+        <div class="radio">
+          <label><input type="radio" name="option" value="flight" {% if selected_option == 'flight' %}checked{% endif %}>Show Flight Bookings</label>
+          <label><input type="radio" name="option" value="train" {% if selected_option == 'train' %}checked{% endif %}>Show Train Bookings</label>
+        </div>
+        <input class="submit" type="submit" value="Submit">
+      </form>
+      <h2 class="booking">Your {{ selected_option.capitalize() }} Bookings:</h2>
+      {% if bookings %}
+          <table>
+              <thead>
+                  <th>Booking ID</th>
+                  <th>{{ selected_option.capitalize() }} Number</th>
+                  {% if selected_option == 'flight' %}
+                  <th>Airline</th>
+                  {% else %}
+                  <th>{{ selected_option.capitalize() }} Name</th>
+                  {% endif %}
+                  <th>Origin</th>
+                  <th>Destination</th>
+                  {% if selected_option == 'flight' %}
+                  <th>Scheduled Departure</th>
+                  <th>Scheduled Arrival</th>
+                  {% else %}
+                  <th>Day</th>
+                  {% endif %}
+                  <th>Travel Date</th>
+                  <th>Status of Journey</th>
+                </thead>
+                {% for booking in bookings %}
+              <tbody>
                 <tr>
-                    <td>{{ booking[2] }}</td> 
-                    <td>{{ booking[3] }}</td> 
-                    <td>{{ booking[4] }}</td> 
-                    <td>{{ booking[5] }}</td> 
-                    <td>{{ booking[6] }}</td> 
-                    {% if selected_option == 'flight' %}
-                    <td>{{ booking[7] }}</td>
-                    <td>{{ booking[8] }}</td>
-                    <td>{{ booking[9] }}</td>
-                    <td>{{ booking[10] }}</td>
-                    {% else %}
-                    <td>{{ booking[7] }}</td>
-                    <td>{{ booking[8] }}</td>
-                    <td>{{ booking[9] }}</td>
-                    {% endif %}
-                </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-    {% else %}
-    <div class="centered-message">
-        <p>No bookings found.</p>
-    </div>
-    {% endif %}
+                  <td>{{ booking[2] }}</td> 
+                      <td>{{ booking[3] }}</td> 
+                      <td>{{ booking[4] }}</td> 
+                      <td>{{ booking[5] }}</td> 
+                      <td>{{ booking[6] }}</td> 
+                      {% if selected_option == 'flight' %}
+                      <td>{{ booking[7] }}</td>
+                      <td>{{ booking[8] }}</td>
+                      <td>{{ booking[9] }}</td>
+                      <td>{{ booking[10] }}</td>
+                      {% else %}
+                      <td>{{ booking[7] }}</td>
+                      <td>{{ booking[8] }}</td>
+                      <td id="hide">{{ booking[9] }}</td>
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                  {% endfor %}
+                </table>
+                {% else %}
+                <div class="centered-message">
+                  <p>No bookings found.</p>
+                </div>
+                {% endif %}
+                <div>
+                  <button class="submit" onclick="window.history.back()">Back</button>
+                  <button class="submit" onclick="location.reload()">Refresh</button>
+                </div>
+              </div>
+            </section>
+            <section class="extra">
+                <div class="info">
+                    <p>
+                        Travel Guide: Get latest updates on airlines and international guidelines,
+                                  state-wise quarantine rules, travel checklist, web-checkins, etc.
+                    </p>
+                    <p>
+                        Important Info: To cancel/claim refund or reschedule/modify
+                                      your booking. Click Here.  
+                    </p>
+                </div>
+            </section>
+
 
     <script>
-        function showFlights() {
-            var xhttp = new XMLHttpRequest();
+        var navlinks = document.getElementById("navlinks");
+
+        function showMenu(){
+            navlinks.style.right="0";
+        }
+        function hideMenu(){
+            navlinks.style.right="-200px";
+        }
+    </script>
+
+            <!-- footer -->
+    <section class="footer">
+      <div class="row">
+          <div class="logo">
+            <a href="{{ url_for('home') }}"><img src="{{url_for('static', filename='img/logo_final.png') }}" alt=""></a>
+            <!-- <a href="{{ url_for('home') }}"><img src="images/logo_final.png" alt=""></a> -->
+            <p>Ease Your Journey <br> Use Journify </p>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-twitter"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+          <div class="footer_col">
+              <h2 class="top">Company</h2>
+              <a href="">About Us</a>
+              <a href="">Destinations</a>
+              <a href="">Packages</a>
+              <a href="">Contacts</a>
+          </div>
+          <div class="footer_col">
+              <h2 class="top">Help</h2>
+              <a href="">Help/FAQ's</a>
+              <a href="">Cancel Flight</a>
+              <a href="">Press</a>
+              <!-- <a href="">Contacts</a> -->
+          </div>
+          <div class="footer_col">
+              <h2 class="top">More</h2>
+              <a href="">Domestic Flights</a>
+              <a href="">Investor Relations</a>
+              <a href="">Partnerships</a>
+              <a href="">Jobs</a>
+          </div>
+          <div class="footer_col">
+              <h2 class="top">Terms</h2>
+              <a href="">Privacy Policy</a>
+              <a href="">Terms of Use</a>
+              <a href="">Accessibility</a>
+              <!-- <a href="">Contacts</a> -->
+          </div>
+      </div>
+  </section>
+
+
+            
+            
+            <script>
+              function showFlights() {
+                var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("bookings").innerHTML = this.responseText;
@@ -164,6 +275,14 @@
             xhttp.open("GET", "/getTrains", true);
             xhttp.send();
         }
+
+        let submenu = document.getElementById("submenu");
+
+      function togglemenu(){
+          submenu.classList.toggle("open_menu"); 
+      }
     </script>
 </body>
 </html>
+
+

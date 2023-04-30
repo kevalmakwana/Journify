@@ -29,18 +29,20 @@
             position: relative;
         }
     </style>
+    <title>{{ title }}</title>
 </head>
 <body>
     <section class="header">
         <nav>
             <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo_final.png') }}" alt=""></a>
-            <div class="nav_links">
+            <div class="nav_links" id="navlinks">
+		<i class="bi bi700 bi-x" onclick="hideMenu()"></i>
                 <ul>
                     <li>
                         <a href="{{ url_for('home') }}">
                             <div class="nav_col home">
                                 <i class="bi bi-house-door" style="font-size: 26px"></i>
-                                <h3>Home</h3>
+                                <h4>Home</h4>
                             </div>
                         </a>
                     </li>
@@ -99,10 +101,12 @@
             </a> -->
             <div class="side profile">
                 <!-- <img src="images/matt_pery.jpg" class="user_pic" onclick="togglemenu()" alt=""> -->
-                <i class="bi bi-person-circle" class="user_pic" onclick="togglemenu()" style="font-size: 30px;"></i>
+                <i class="bi bi-person-circle" onclick="togglemenu()" style="font-size: 30px"></i>
                 <h4>{{ username }}</h4>
             </div>
             
+            <i class="bi bi700 bi-list" onclick="showMenu()"></i>
+
             <div class="sub_menu_wrap" id="submenu">
                 <div class="sub_menu">
                     <div class="user_info">
@@ -126,7 +130,7 @@
                         <span>></span>
                     </a>
                     <a href="{{ url_for('signup_page') }}" class="sub_menu_link">
-                        <img src="{{ url_for('static', filename='img/Logout.png') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/logout.png') }}" alt="">
                         <p>Logout</p>
                         <span>></span>
                     </a>
@@ -144,6 +148,17 @@
         </div>
     </section>
     
+    <script>
+        var navlinks = document.getElementById("navlinks");
+
+        function showMenu(){
+            navlinks.style.right="0";
+        }
+        function hideMenu(){
+            navlinks.style.right="-200px";
+        }
+    </script>
+
     <!-- top destinations -->
     <section class="top_dest">
         <h1>Explore Top Destinations</h1>

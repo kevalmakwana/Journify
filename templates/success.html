@@ -1,57 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Booking Confirmation</title>
+	<title>Booking Confirmed</title>
 	<style>
 		body {
-			background-color: #F7F7F7;
-			font-family: Arial, sans-serif;
-			margin: 0;
-			padding: 0;
+			background-image: url("../static/img/maps.jpg");
+			background-size: cover;
+            margin-top: 100px;
+			background-position: center;
+            font-family: 'Merriweather', serif;
+            text-align: center;
 		}
-
 		.container {
-			background-color: #FFFFFF;
+			width: 80%;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 50px;
+            margin-top: 145px;
+			background-color: rgba(255, 248, 239, 0.8); /* transparent white */
 			border-radius: 10px;
-			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-			margin: 50px auto;
-			max-width: 600px;
-			padding: 20px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+		}
+		h1 {
+			font-size: 36px;
+			margin-bottom: 30px;
 			text-align: center;
 		}
-
-		h1 {
-			color: #005A9C;
-			font-size: 32px;
-			margin-bottom: 20px;
-		}
-
 		p {
-			font-size: 18px;
+			font-size: 24px;
 			margin-bottom: 20px;
+			line-height: 1.5;
 		}
-
 		button {
-			background-color: #005A9C;
+			display: block;
+			margin: 0 auto;
+			padding: 12px 24px;
+			font-size: 20px;
+            background-color:#d6a92ff5;
+			color: #fff;
 			border: none;
 			border-radius: 5px;
-			color: #FFFFFF;
 			cursor: pointer;
-			font-size: 18px;
-			padding: 10px 20px;
-			transition: background-color 0.3s ease;
 		}
-
 		button:hover {
-			background-color: #003F6E;
+        background-color:#d6a92fb6;
 		}
 	</style>
 </head>
 <body>
 	<div class="container">
-		<h1>Booking Confirmed!</h1>
-		<p>Thank you for booking with Journify. Your booking has been confirmed and the details have been sent to your email address.</p>
+		<h1>Booking Confirmed</h1>
+		<p>Thank you for traveling with Journify! <br>We hope that your upcoming adventure is filled with joy and unforgettable experiences.</p>
 		<button onclick="window.location.href='{{ url_for('home') }}'">Back to Home</button>
 	</div>
 </body>
 </html>
+
+

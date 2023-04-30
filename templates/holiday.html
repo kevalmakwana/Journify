@@ -1,39 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Holiday - templatemo</title>
+<!--
+Holiday Template
+http://www.templatemo.com/tm-475-holiday
+-->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700' rel='stylesheet' type='text/css'>
+  <link href="{{url_for('static', filename='css/font-awesome.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">  
+  <link href="{{ url_for('static', filename='css/flexslider.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/templatemo-style.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/holiday.css') }}">
+  <!-- <link rel="stylesheet" href="holiday.css"> -->
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400;0,700;1,400;1,600&display=swap" rel="stylesheet"> 
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
-</head>
-<body>
-    <section class="header">
-        <div class="top_row">
-            <img src="images/journify_logo (2).png" alt="">
-            <div class="nav">
-                <div class="home">
-                    <i class="bi bi-house-door"></i>
-                    Home
+  </head>
+  <body class="tm-gray-bg">
+  	<!-- Header -->
+  	<section class="header">
+        <nav>
+            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo_final.png') }}" alt=""></a>
+            <div class="nav_links" id="navlinks">
+		<i class="bi bi700 bi-x" onclick="hideMenu()"></i>
+                <ul>
+                    <li>
+                        <a href="{{ url_for('home') }}">
+                            <div class="nav_col">
+                                <i class="bi bi-house-door" style="font-size: 26px"></i>
+                                <h4>Home</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('flight') }}">
+                            <div class="nav_col">
+                                <i class="bi bi-airplane" style="font-size: 26px"></i>
+                                <h4>Flights</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('train') }}">
+                            <div class="nav_col">
+                                <i class="bi bi-train-lightrail-front" style="font-size: 26px"></i>
+                                <h4>Trains</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('holiday') }}">
+                            <div class="nav_col home">
+                                <i class="bi bi-briefcase" style="font-size: 26px"></i>
+                                <h4>Holidays</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('trip') }}">
+                            <div class="nav_col">
+                                <i class="bi bi-car-front" style="font-size: 26px"></i>
+                                <h4>Trips</h4>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a href="user.html">
+                        <div class="profile">
+                            <i class="bi bi-person-circle" style="font-size: 30px;"></i>
+                            <h4>Matt Pery</h4>
+                        </div>
+                    </a>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" href="user.html">Profile</a>
+                  <a class="dropdown-item" href="login.html">Login Page</a>
                 </div>
-                <div class="flight">
-                    <i class="bi bi-airplane"></i>
-                    Flights
+              </div> -->
+            <!-- <a href="user.html">
+                <div class="profile">
+                    <h4>Matt Pery</h4>
                 </div>
-                <div class="train">
-                    <i class="bi bi-train-lightrail-front"></i>
-                    Trains
+            </a> -->
+            <div class="side profile">
+                <!-- <img src="images/matt_pery.jpg" class="user_pic" onclick="togglemenu()" alt=""> -->
+                <i class="bi bi-person-circle" class="user_pic" onclick="togglemenu()" style="font-size: 30px;"></i>
+                <h4 class="username">{{ username }}</h4>
+            </div>
+            <i class="bi bi700 bi-list" onclick="showMenu()"></i>
+            <div class="sub_menu_wrap" id="submenu">
+                <div class="sub_menu">
+                    <div class="user_info">
+                        <!-- <img src="images/matt_pery.jpg" alt=""> -->
+                        <h3>{{ username }}</h3>
+                    </div>
+                    <hr>
+                    <a href="{{ url_for('user') }}" class="sub_menu_link">
+                        <img src="{{ url_for('static', filename='img/profile.png') }}" alt="">
+                        <p>View Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub_menu_link">
+                        <img src="{{ url_for('static', filename='img/setting.png') }}" alt="">
+                        <p>Settings and privacy</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub_menu_link">
+                        <img src="{{ url_for('static', filename='img/help.png') }}" alt="">
+                        <p>Help & Support</p>
+                        <span>></span>
+                    </a>
+                    <a href="{{ url_for('signup_page') }}" class="sub_menu_link">
+                        <img src="{{ url_for('static', filename='img/logout.png') }}" alt="">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
                 </div>
-                <div class="holiday">
-                    <i class="bi bi-briefcase"></i>
-                    Holidays
-                </div>
-                <div class="trip">
-                    <i class="bi bi-car-front"></i>
-                    My Trips
-                </div>
+            </div>
+        </nav>
+        <div class="text_box">
+            <h1>
+                EXPLORE THE UNEXPLORED EARTH
+            </h1>
+            <p class="first">
+                Journify will take to to real heavens across the globe .<br>
+                We can build the holidays of your dreams and make them unforgettable.
+            </p>
+        </div>
+    </section>
+
+
+	<script>
+        var navlinks = document.getElementById("navlinks");
+
+        function showMenu(){
+            navlinks.style.right="0";
+        }
+        function hideMenu(){
+            navlinks.style.right="-200px";
+        }
+    	</script>
+
+
+	<!-- gray bg -->	
+	<section class="container tm-home-section-1" id="more">
+		<div class="row">
+
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-center">
+					<img src="../static/img/index-01.jpg" alt="image" class="img-responsive">
+					<a href="#">
+						<div class="tm-blue-gradient-bg  tm-green-gradient-bg tm-city-price-container">
+							<span>New York</span>
+							<span>₹ 2,30,000</span>
+						</div>	
+					</a>			
+				</div>				
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-center">
+					<img src="../static/img/sydney.jpg" alt="image" class="img-responsive">
+					<a href="#">
+						<div class="tm-green-gradient-bg tm-city-price-container">
+							<span>Sydney</span>
+							<span>₹ 1,80,000</span>
+						</div>	
+					</a>			
+				</div>				
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6">
+				<div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-right">
+					<img src="../static/img/index-02.jpg" alt="image" class="img-responsive">
+					<a href="#">
+						<div class="tm-red-gradient-bg tm-city-price-container">
+							<span>Paris</span>
+							<span>₹ 2,10,200</span>
+						</div>	
+					</a>					
+				</div>				
+			</div>
+		</div>
+	
+		<div class="section-margin-top">
+			<div class="row">				
+				<div class="tm-section-header">
+					<div class="col-lg-3 col-md-3 col-sm-3"><hr></div>
+					<div class="col-lg-6 col-md-6 col-sm-6"><h2 class="tm-section-title">World Tours</h2></div>
+					<div class="col-lg-3 col-md-3 col-sm-3"><hr></div>	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-xxs-12">
+					<div class="tm-home-box-2">						
+						<img src="../static/img/index-03.jpg" alt="image" class="img-responsive">
+						<h3>Experience the bewilderness of Rome</h3>
+						<p class="tm-date">28 March 2016</p>
+						<div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-xxs-12">
+					<div class="tm-home-box-2">						
+					    <img src="../static/img/index-04.jpg" alt="image" class="img-responsive">
+						<h3>Dive into astonishing beauty of Switzerland</h3>
+						<p class="tm-date">26 March 2016</p>
+						<div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-xxs-12">
+					<div class="tm-home-box-2">						
+					    <img src="../static/img/index-05.jpg" alt="image" class="img-responsive">
+						<h3>Relish the spiritual culute in Thailand</h3>
+						<p class="tm-date">24 March 2016</p>
+						<div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-xxs-12">
+					<div class="tm-home-box-2 tm-home-box-2-right">						
+					    <img src="../static/img/index-06.jpg" alt="image" class="img-responsive">
+						<h3>Roam aound the streets of London</h3>
+						<p class="tm-date">22 March 2016</p>
+						<div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<p class="home-description"> Trust Journify , ease you sky <a href="http://www.facebook.com/templatemo" target="_parent">contact us</a>. Credit goes to <a rel="nofollow" href="http://unsplash.com" target="_parent"> Sprite </a> for being the official partner.</p>					
+				</div>
+			</div>			
+		</div>
+	</section>		
+	
+	<!-- white bg -->
+	<section class="tm-white-bg section-padding-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="tm-section-header section-margin-top">
+					<div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+					<div class="col-lg-4 col-md-6 col-sm-6"><h2 class="tm-section-title">Trending Packages </h2></div>
+					<div class="col-lg-4 col-md-3 col-sm-3"><hr></div>	
+				</div>
+				<div class="col-lg-6">
+					<div class="tm-home-box-3">
+						<div class="tm-home-box-3-img-container">
+							<img src="../static/img/index-07.jpg" alt="image" class="img-responsive">	
+						</div>						
+						<div class="tm-home-box-3-info">
+							<p class="tm-home-box-3-description"> Just take a deep breath and book a trip to himachal , the most upvoted honeymoon destination in india . Experince the joy of toy train </p>
+					        <div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description box-3">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+						</div>						
+					</div>					
+			     </div>
+			     <div class="col-lg-6">
+			        <div class="tm-home-box-3">
+						<div class="tm-home-box-3-img-container">
+							<img src="../static/img/index-08.jpg" alt="image" class="img-responsive">	
+						</div>						
+						<div class="tm-home-box-3-info">
+							<p class="tm-home-box-3-description">Proin gravida nibhvell velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum</p>
+					        <div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description box-3">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+						</div>						
+					</div>
+				</div>
+				<div class="col-lg-6">
+				    <div class="tm-home-box-3">
+						<div class="tm-home-box-3-img-container">
+							<img src="../static/img/index-09.jpg" alt="image" class="img-responsive">	
+						</div>						
+						<div class="tm-home-box-3-info">
+							<p class="tm-home-box-3-description"> Kathmadu, where people like feel its hometown. Local guides will take you deep into the native culture of nepal . Taste the diverse local food style.  </p>
+					        <div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description box-3">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+						</div>						
+					</div>
+			    </div>
+			    <div class="col-lg-6">
+			        <div class="tm-home-box-3">
+						<div class="tm-home-box-3-img-container">
+							<img src="../static/img/index-10.jpg" alt="image" class="img-responsive">	
+						</div>						
+						<div class="tm-home-box-3-info">
+							<p class="tm-home-box-3-description"> Assam , where the tea gardens seem as if you are being most welcomed into the lap of nature . The native people are wely humble . </p>
+					        <div class="tm-home-box-2-container">
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+							<a href="#" class="tm-home-box-2-link"><span class="tm-home-box-2-description box-3">Travel</span></a>
+							<a href="#" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+						</div>
+						</div>						
+					</div>
+			   	</div>
+			</div>		
+		</div>
+	</section>
+    <section class="footer">
+        <div class="row">
+            <div class="logo">
+                <a href="{{ url_for('home') }}"><img src="{{url_for('static', filename='img/logo_final.png') }}" alt=""></a>
+                <p>Ease Your Journey <br> Use Journify </p>
+                <a href=""><i class="bi bi-facebook"></i></a>
+                <a href=""><i class="bi bi-twitter"></i></a>
+                <a href=""><i class="bi bi-instagram"></i></a>
+                <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+            <div class="footer_col">
+                <h2 class="top">Company</h2>
+                <a href="">About Us</a>
+                <a href="">Destinations</a>
+                <a href="">Packages</a>
+                <a href="">Contacts</a>
+            </div>
+            <div class="footer_col">
+                <h2 class="top">Help</h2>
+                <a href="">Help/FAQ's</a>
+                <a href="">Cancel Flight</a>
+                <a href="">Press</a>
+                <!-- <a href="">Contacts</a> -->
+            </div>
+            <div class="footer_col">
+                <h2 class="top">More</h2>
+                <a href="">Domestic Flights</a>
+                <a href="">Investor Relations</a>
+                <a href="">Partnerships</a>
+                <a href="">Jobs</a>
+            </div>
+            <div class="footer_col">
+                <h2 class="top">Terms</h2>
+                <a href="">Privacy Policy</a>
+                <a href="">Terms of Use</a>
+                <a href="">Accessibility</a>
+                <!-- <a href="">Contacts</a> -->
             </div>
         </div>
     </section>
-</body>
-</html>
+
+    <script>
+        let submenu = document.getElementById("submenu");
+
+        function togglemenu(){
+            submenu.classList.toggle("open_menu"); 
+        }
+    </script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery-1.11.2.min.js')}}"></script>      		<!-- jQuery -->
+  	<script type="text/javascript" src="{{url_for('static', filename='js/moment.js')}}"></script>							<!-- moment.js -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>					<!-- bootstrap js -->
+	<script type="text/javascript" src="{{url_for('static', filename='js/bootstrap-datetimepicker.min.js')}}"></script>	<!-- bootstrap date time picker js, http://eonasdan.github.io/bootstrap-datetimepicker/ -->
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.flexslider-min.js')}}"></script>
+<!--
+	<script src="js/froogaloop.js"></script>
+	<script src="js/jquery.fitvid.js"></script>
+-->
+   	<script type="text/javascript" src="{{url_for('static',filename='js/templatemo-script.js')}}"></script>      		<!-- Templatemo Script -->
+	<script>
+		// HTML document is loaded. DOM is ready.
+		$(function() {
+
+			$('#hotelCarTabs a').click(function (e) {
+			  e.preventDefault()
+			  $(this).tab('show')
+			})
+
+        	$('.date').datetimepicker({
+            	format: 'MM/DD/YYYY'
+            });
+            $('.date-time').datetimepicker();
+
+			// https://css-tricks.com/snippets/jquery/smooth-scrolling/
+		  	$('a[href*=#]:not([href=#])').click(function() {
+			    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+			      var target = $(this.hash);
+			      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+			      if (target.length) {
+			        $('html,body').animate({
+			          scrollTop: target.offset().top
+			        }, 1000);
+			        return false;
+			      }
+			    }
+		  	});
+		});
+		
+		// Load Flexslider when everything is loaded.
+		$(window).load(function() {	  		
+			// Vimeo API nonsense
+
+
+
+			  
+
+//	For images only
+		    $('.flexslider').flexslider({
+			    controlNav: false
+		    });
+
+
+	  	});
+	</script>
+ </body>
+ </html>

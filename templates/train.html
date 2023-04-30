@@ -13,7 +13,8 @@
     <section class="header">
         <nav>
             <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo_final.png') }}" alt=""></a>
-            <div class="nav_links">
+            <div class="nav_links" id="navlinks">
+		 <i class="bi bi700 bi-x" onclick="hideMenu()"></i>
                 <ul>
                     <li>
                         <a href="{{ url_for('home') }}">
@@ -59,9 +60,10 @@
             </div>
             <div class="side profile">
                 <!-- <img src="images/matt_pery.jpg" class="user_pic" onclick="togglemenu()" alt=""> -->
-                <i class="bi bi-person-circle" class="user_pic" onclick="togglemenu()" style="font-size: 30px;"></i>
+                <i class="bi bi-person-circle" onclick="togglemenu()" style="font-size: 30px"></i>
                 <h4>{{ username }}</h4>
             </div>
+	    <i class="bi bi700 bi-list" onclick="showMenu()"></i>
             <div class="sub_menu_wrap" id="submenu">
                 <div class="sub_menu">
                     <div class="user_info">
@@ -85,7 +87,7 @@
                         <span>></span>
                     </a>
                     <a href="{{ url_for('signup_page') }}" class="sub_menu_link">
-                        <img src="{{ url_for('static', filename='img/Logout.png') }}" alt="">
+                        <img src="{{ url_for('static', filename='img/logout.png') }}" alt="">
                         <p>Logout</p>
                         <span>></span>
                     </a>
@@ -144,6 +146,17 @@
         </div>
     </section>
 
+    <script>
+        var navlinks = document.getElementById("navlinks");
+
+        function showMenu(){
+            navlinks.style.right="0";
+        }
+        function hideMenu(){
+            navlinks.style.right="-200px";
+        }
+    </script>
+
     <section class="extra">
         <div class="info">
             <p>
@@ -201,10 +214,11 @@
     </section>
     <script>
         let submenu = document.getElementById("submenu");
-
+    
         function togglemenu(){
             submenu.classList.toggle("open_menu"); 
         }
+    
         const originSearchBox = document.getElementById('origin-search-box');
         const originResultsContainer = document.getElementById('origin-search-results');
         const destinationSearchBox = document.getElementById('destination-search-box');
@@ -222,12 +236,19 @@
                             results.forEach(result => {
                                 const option = document.createElement('div');
                                 option.innerText = result;
+                                option.style.color = 'white'; // Adding a red text color to the list
                                 option.addEventListener('click', function() {
                                     originSearchBox.value = this.innerText;
                                     originResultsContainer.innerHTML = '';
                                 });
                                 originResultsContainer.appendChild(option);
                             });
+                            // Positioning the list based on the search box
+                            const originBoxPosition = originSearchBox.getBoundingClientRect();
+                            originResultsContainer.style.position = 'absolute';
+                            originResultsContainer.style.zIndex = '999';
+                            originResultsContainer.style.top = originBoxPosition.bottom + 'px';
+                            originResultsContainer.style.left = originBoxPosition.left + 'px';
                         } else {
                             originResultsContainer.innerHTML = 'No results found';
                         }
@@ -250,24 +271,30 @@
                             results.forEach(result => {
                                 const option = document.createElement('div');
                                 option.innerText = result;
+                                option.style.color = 'white'; // Adding a red text color to the list
                                 option.addEventListener('click', function() {
                                     destinationSearchBox.value = this.innerText
                                     destinationResultsContainer.innerHTML = '';
-                        });
-                        destinationResultsContainer.appendChild(option);
-                    });
-                } else {
-                    destinationResultsContainer.innerHTML = 'No results found';
-                }
-            })
-            .catch(error => console.error(error));
-    } else {
-        destinationResultsContainer.innerHTML = '';
-    }
-});   
+                                });
+                                destinationResultsContainer.appendChild(option);
+                            });
+                            // Positioning the list based on the search box
+                            const destinationBoxPosition = destinationSearchBox.getBoundingClientRect();
+                            destinationResultsContainer.style.position = 'absolute';
+                            destinationResultsContainer.style.zIndex = '999';
+                            destinationResultsContainer.style.top = destinationBoxPosition.bottom + 'px';
+                            destinationResultsContainer.style.left = destinationBoxPosition.left + 'px';
+                        } else {
+                            destinationResultsContainer.innerHTML = 'No results found';
+                        }
+                    })
+                    .catch(error => console.error(error));
+            } else {
+                destinationResultsContainer.innerHTML = '';
+            }
+        });
     </script>
-
-
+    
 
 </body>
 </html>

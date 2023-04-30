@@ -5,23 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flight.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/flight.css') }}"> -->
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400;0,700;1,400;1,600&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="{{url_for('static', filename='css/searchresultsflights.css')}}">
 </head>
 <body>
     <section class="header">
         <nav>
             <a href="{{ url_for('home') }}"><img src="{{url_for('static', filename='img/logo_final.png') }}" alt=""></a>
-            <div class="nav_links" id="navlinks">
-		<i class="bi bi700 bi-x" onclick="hideMenu()"></i>
+            <div class="nav_links">
                 <ul>
                     <li>
                         <a href="{{ url_for('home') }}">
                             <div class="nav_col">
                                 <i class="bi bi-house-door" style="font-size: 26px"></i>
-                                <h4>Home</h4>
+                                <h3>Home</h3>
                             </div>
                         </a>
                     </li>
@@ -61,10 +60,9 @@
             </div>
             <div class="side profile">
                 <!-- <img src="images/matt_pery.jpg" class="user_pic" onclick="togglemenu()" alt=""> -->
-                <i class="bi bi-person-circle" onclick="togglemenu()" style="font-size: 30px"></i>
+                <i class="bi bi-person-circle" class="user_pic" onclick="togglemenu()" style="font-size: 30px;"></i>
                 <h4>{{ username }}</h4>
             </div>
-	    <i class="bi bi700 bi-list" onclick="showMenu()"></i>
             <div class="sub_menu_wrap" id="submenu">
                 <div class="sub_menu">
                     <div class="user_info">
@@ -95,83 +93,62 @@
                 </div>
             </div>
         </nav>
-        <div class="container">
-            <form method="post" action="/flight/search">
-                <div class="input_field">
-                    <div class="location">
-                        <div class="location_col col">
-                            <label for="origin">Origin Airport</label>
-                            <input type="text" id="origin-search-box" name="origin" autocomplete="off" placeholder="Delhi">
-                            <div id="origin-search-results" class="search-results-container"></div>
-                            
-                        </div>                        
-                        <div class="location_col col">
-                            <label for="destination">Destination Airport</label>
-                            <input type="text" id="destination-search-box" name="destination" autocomplete="off" placeholder="Mumbai">
-                            <div id="destination-search-results" class="search-results-container"></div>
-                            
-                        </div> 
-                    </div>
-                    <div class="date">
-                        <div class="date_col col">
-                            <!-- <h2>Departure Date</h2> -->
-                            <label for="dep_date">Departure Date</label>
-                            <input type="date" name="dep_date" id="dep_date" required>
-                            
-                        </div>
-                        <div class="date_col col">
-                            <!-- <h2>return Date</h2> -->
-                            <label for="ret_date">Return Date</label>
-                            <input type="date" name="ret_date" id="ret_date">
-                            
-                        </div>
-                        
-                    </div>
-                    <div class="class">
-                        <!-- <h2>Traveller and Class</h2> -->
-                        <label for="Class">Class</label>
-                        <Select id="Class">
-                            <option value="Class">Select Class</option>
-                            <option value="Economy Class">Economy Class</option>
-                            <option value="Premium Economy Class">Premium Economy Class</option>
-                            <option value="Business Class">Business Class</option>
-                            <option value="First Class">First Class</option>
-                        </Select>
-
-                    </div>
-                    <div class="check">
-                        <input type="radio" name="offer">
-                        <label for="Regular Fares">Regular Fares</label>
-                        <input type="radio" name="offer">
-                        <label for="Armed forces fares">Armed Forces Fares</label>
-                        <input type="radio" name="offer">
-                        <label for="Student fares">Student Fares</label>
-                        <input type="radio" name="offer">
-                        <label for="Senior Citizen Fares">Senior Citizen Fares</label>
-                        <input type="radio" name="offer">
-                        <label for="Doctors & Nurses Fares">Doctors & Nurses Fares</label>
-                    </div>
+        <!-- <div class="top-right">
+          <p>Welcome, {{ username }}</p>
+        </div> -->
+        <div class="search_result">
+          <h1>Search Results</h1>
+          <h2>Departure Date: {{ dep_date }}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Flight Number</th>
+                <th>Airline</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Scheduled Departure</th>
+                <th>Scheduled Arrival</th>
+                <th></th>
+              </tr>
+            </thead>
+            
+            {% if results %}
+            {% for result in results %}
+            <tbody>
+              <tr>
+                <td>{{ result[0] }}</td>
+                <td>{{ result[1] }}</td>
+                <td>{{ result[2] }}</td>
+                <td>{{ result[3] }}</td>
+                <td>{{ result[5] }}</td>
+                <td>{{ result[6] }}</td>
+                <td>
+                  <form action="{{ url_for('select_flight') }}" method="post">
+                        <input type="hidden" name="flight_no" value="{{ result[0] }}">
+                        <input type="hidden" name="airline" value="{{ result[1] }}">
+                        <input type="hidden" name="origin" value="{{ result[2] }}">
+                        <input type="hidden" name="destination" value="{{ result[3] }}">
+                        <input type="hidden" name="dep_time" value="{{ result[5] }}">
+                        <input type="hidden" name="arr_time" value="{{ result[6] }}">
+                        <input type="hidden" name="dep_date" value="{{ dep_date }}">
+                        <button class="book" type="submit">Book Flight</button>
+                      </form>
+                    </td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+                
+                {% else %}
+                <div class="centered-message">
+                  <h1>No flights found for the desired origin and destination.</h1>
                 </div>
-                <div class="btn_field">
-                    <div class="search">
-                        <input type="submit" value="Search">
-                    </div>
-                </div>
-            </form>
+                {% endif %}
+              </table>
+              <button onclick="window.history.back()">Back</button>
+              <button onclick="location.reload()">Refresh</button>
         </div>
+        
     </section>
-
-    <script>
-        var navlinks = document.getElementById("navlinks");
-
-        function showMenu(){
-            navlinks.style.right="0";
-        }
-        function hideMenu(){
-            navlinks.style.right="-200px";
-        }
-    </script>
-
     <section class="extra">
         <div class="info">
             <p>
@@ -361,87 +338,5 @@
             </div>
         </div>
     </section>
-    <script>
-        let submenu = document.getElementById("submenu");
-    
-        function togglemenu(){
-            submenu.classList.toggle("open_menu"); 
-        }
-    
-        const originSearchBox = document.getElementById('origin-search-box');
-        const originResultsContainer = document.getElementById('origin-search-results');
-        const destinationSearchBox = document.getElementById('destination-search-box');
-        const destinationResultsContainer = document.getElementById('destination-search-results');
-    
-        originSearchBox.addEventListener('input', function() {
-            const query = this.value;
-    
-            if (query.length > 0) {
-                fetch('/search_flight_origin?q=' + query)
-                    .then(response => response.json())
-                    .then(results => {
-                        if (results.length > 0) {
-                            originResultsContainer.innerHTML = '';
-                            results.forEach(result => {
-                                const option = document.createElement('div');
-                                option.innerText = result;
-                                option.style.color = 'white'; // Adding a red text color to the list
-                                option.addEventListener('click', function() {
-                                    originSearchBox.value = this.innerText;
-                                    originResultsContainer.innerHTML = '';
-                                });
-                                originResultsContainer.appendChild(option);
-                            });
-                            // Positioning the list based on the search box
-                            // const originBoxPosition = originSearchBox.getBoundingClientRect();
-                            // originResultsContainer.style.position = 'absolute';
-                            // originResultsContainer.style.zIndex = '999';
-                            // originResultsContainer.style.top = originBoxPosition.bottom + 'px';
-                            // originResultsContainer.style.left = originBoxPosition.left + 'px';
-                        } else {
-                            originResultsContainer.innerHTML = 'No results found';
-                        }
-                    })
-                    .catch(error => console.error(error));
-            } else {
-                originResultsContainer.innerHTML = '';
-            }
-        });
-    
-        destinationSearchBox.addEventListener('input', function() {
-            const query = this.value;
-    
-            if (query.length > 0) {
-                fetch('/search_flight_destination?q=' + query)
-                    .then(response => response.json())
-                    .then(results => {
-                        if (results.length > 0) {
-                            destinationResultsContainer.innerHTML = '';
-                            results.forEach(result => {
-                                const option = document.createElement('div');
-                                option.innerText = result;
-                                option.style.color = 'white'; // Adding a red text color to the list
-                                option.addEventListener('click', function() {
-                                    destinationSearchBox.value = this.innerText
-                                    destinationResultsContainer.innerHTML = '';
-                                });
-                                destinationResultsContainer.appendChild(option);
-                            });
-                            // Positioning the list based on the search box
-                            // const destinationBoxPosition = destinationSearchBox.getBoundingClientRect();
-                            // destinationResultsContainer.style.position = 'absolute';
-                            // destinationResultsContainer.style.zIndex = '999';
-                            // destinationResultsContainer.style.top = destinationBoxPosition.bottom + 'px';
-                            // destinationResultsContainer.style.left = destinationBoxPosition.left + 'px';
-                        } else {
-                            destinationResultsContainer.innerHTML = 'No results found';
-                        }
-                    })
-                    .catch(error => console.error(error));
-            } else {
-                destinationResultsContainer.innerHTML = '';
-            }
-        });
-    </script>
 </body>
 </html>
